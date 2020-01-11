@@ -9,6 +9,8 @@ env:
   global:
     - IMAGE_NAME=nithinbenny444/nginxapp
 
+notifications:
+        email: nithinbenny444@gmail.com
 os:
   - linux
 
