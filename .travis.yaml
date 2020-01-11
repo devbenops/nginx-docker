@@ -8,6 +8,7 @@ services:
 env:
   global:
     - IMAGE_NAME=nithinbenny444/nginxapp
+    - IMAGE_TAG=latest
 
 language: generic
 os:
@@ -16,9 +17,9 @@ os:
 
 before_deploy:
   # create a docker image tag for develop branch
-  - if [[ $TRAVIS_BRANCH == "develop" ]]; then export IMAGE_TAG=$TRAVIS_BUILD_NUMBER-dev; fi
+  # - if [[ $TRAVIS_BRANCH == "develop" ]]; then export IMAGE_TAG=$TRAVIS_BUILD_NUMBER-dev; fi
   # create a docker image tag for git tags
-  - if [[ $TRAVIS_TAG ]]; then export IMAGE_TAG=$TRAVIS_TAG; fi
+  # - if [[ $TRAVIS_TAG ]]; then export IMAGE_TAG=$TRAVIS_TAG; fi
   - docker build -t "$IMAGE_NAME" .
   - docker tag "$IMAGE_NAME" "$IMAGE_NAME:$IMAGE_TAG"
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
@@ -30,7 +31,7 @@ deploy:
     script: docker push "${IMAGE_NAME}:${IMAGE_TAG}"
     on:
       all_branches: true
-      condition: $TRAVIS_BRANCH =~ ^develop.*
+      # condition: $TRAVIS_BRANCH =~ ^develop.*
   # create docker image for tags
   - provider: script
     script: docker push "${IMAGE_NAME}:${IMAGE_TAG}"
